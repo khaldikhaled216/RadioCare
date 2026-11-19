@@ -1,0 +1,34 @@
+# Maven build output
+target/
+!.mvn/wrapper/maven-wrapper.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Données applicatives générées à l'exécution (données patients, même fictives)
+data/
+exports/
+*.corrompu-*
+*.tmp
+
+# IDE / éditeurs
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+.factorypath
+nbproject/
+*.swp
+*~
+
+# Système
+.DS_Store
+Thumbs.db
+
+# Journaux et secrets éventuels
+*.log
+hs_err_pid*
+.env
+*.env
+*.pem
+*.key

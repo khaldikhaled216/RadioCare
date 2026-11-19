@@ -1,0 +1,326 @@
+@startuml RadioCare
+' Diagramme de classes UML de RadioCare (rendu : https://www.plantuml.com ou extension PlantUML)
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+skinparam linetype ortho
+hide empty members
+left to right direction
+
+package "model (Entités / POJO)" {
+  interface Identifiable { +getId() : String }
+
+  abstract class Personne {
+    #cin : String
+    #nom : String
+    #prenom : String
+    #telephone : String
+    #email : String
+    +getNomComplet() : String
+  }
+
+  abstract class PersonnelMedical {
+    +{abstract} getFonction() : String
+    +{abstract} calculerRemuneration(a : ActiviteMensuelle) : double
+  }
+
+  class Patient {
+    -dateNaissance : LocalDate
+    -numAssurance : String
+    -tauxCouvertureAssurance : double
+    -soldeCompte : double
+    -historiqueExamensIds : List<String>
+    -contreIndications : List<ContreIndication>
+    +isAssure() : boolean
+    +crediter(m) / debiter(m)
+  }
+
+  class MedecinRadiologue {
+    -idMedecin : String
+    -specialite : Specialite
+    -tarifPourcentageActe : double
+    +calculerRemuneration(a) : double
+  }
+
+  class DisponibiliteHebdo {
+    -jours : Set<DayOfWeek>
+    -heureDebut : LocalTime
+    -heureFin : LocalTime
+    +couvre(date, debut, fin) : boolean
+  }
+
+  class ManipulateurRadio {
+    -idManip : String
+    -habilitations : Set<Habilitation>
+    -tarifHoraire : double
+    -statutDispo : StatutDispo
+    -heuresGardeParMois : Map<String, Double>
+    +calculerRemuneration(a) : double
+    +possedeHabilitation(h) : boolean
+  }
+
+  class ActiviteMensuelle <<record>> {
+    mois; nombreActes; montantActesHT; heuresActes; heuresGarde
+  }
+
+  class EquipementImagerie {
+    -idEquipement : String
+    -type : TypeEquipement
+    -marque / modele : String
+    -heuresCumulees : double
+    -heuresRestantesMaintenance : double
+    -intervalleMaintenanceHeures : double
+    -statut : StatutEquipement
+    +enregistrerUtilisation(h)
+    +effectuerMaintenance(i)
+  }
+
+  class InterventionMaintenance {
+    -date : LocalDate
+    -preventive : boolean
+    -description : String
+    -refPieceJustificative : String
+    -cout : double
+  }
+
+  class SalleRadiologie {
+    -idSalle : String
+    -nom : String
+    -numeroEtage : int
+    -typeSalle : TypeSalle
+    -equipementAttribueId : String
+    -normeBlindagePlomb : String
+    -epaisseurPlombMm : double
+    -statutDispo : StatutSalle
+    +isBlindageConforme() : boolean
+  }
+
+  class ExamenMedical {
+    -idExamen : String
+    -codeActe : String
+    -libelle : String
+    -typeEquipementRequis : TypeEquipement
+    -dureeEstimeeMinutes : int
+    -tarifHT : double
+    -idConsommableRequis : String
+    -quantiteConsommable : int
+  }
+
+  class RendezVous {
+    -idRdv : String
+    -date : LocalDate
+    -heureDebut : LocalTime
+    -dureeMinutes : int
+    -idPatient / idMedecin / idManip / idSalle / idExamen : String
+    -statut : StatutRdv
+    -dateCreation : LocalDateTime
+    -heureArrivee / heurePriseEnCharge : LocalTime
+    +chevauche(autre) : boolean
+  }
+
+  class CompteRenduMedical {
+    -idCompteRendu : String
+    -idRdv : String
+    -date : LocalDate
+    -refOrdonnanceTextuelle : String
+    -transcriptionDiagnosticTextuel : String
+    -codeResultat : CodeResultat
+  }
+
+  class FactureMedicale {
+    +{static} TAUX_TVA = 0.19
+    -numFacture : String
+    -idPatient / idRdv : String
+    -montantHT / montantTTC : double
+    -partAssurance / partPatient : double
+    -montantPaye : double
+    -statutPaiement : StatutPaiement
+    +getResteAPayer() : double
+  }
+
+  class Paiement {
+    -idPaiement : String
+    -numFacture : String
+    -datePaiement : LocalDate
+    -montantRecu : double
+    -modePaiement : ModePaiement
+    -referenceTextuellePreuve : String
+  }
+
+  class ConsommableMedical {
+    -idProduit : String
+    -designation : String
+    -categorie : CategorieConsommable
+    -quantiteEnStock : int
+    -seuilAlerte : int
+    -prixUnitaireHT : double
+    -datePeremption : LocalDate
+    +isStockCritique() : boolean
+  }
+
+  class DemandeTeleExpertise {
+    -idExpertise : String
+    -idRdv / idMedecinDemandeur : String
+    -idMedecinExpertExterne : String
+    -dateEnvoi / dateCreneau : LocalDateTime
+    -compteRenduInitialTextuel : String
+    -transcriptionAvisTextuel : String
+    -tarifHonorairesExpert : double
+    -statut : StatutExpertise
+  }
+
+  class CommandeFournisseur {
+    -idCommande : String
+    -idProduit : String
+    -nomFournisseur : String
+    -quantiteCommandee : int
+    -dateCommande / dateLivraisonPrevue : LocalDate
+    -montantTotal : double
+    -refFactureTextuelle : String
+    -statutLivraison : StatutLivraison
+  }
+
+  class ConflitJournal {
+    -dateHeure : LocalDateTime
+    -type : TypeConflit
+    -message : String
+  }
+
+  enum ContreIndication {
+    PACEMAKER; IMPLANT_METALLIQUE; ALLERGIE_IODE
+    ALLERGIE_GADOLINIUM; INSUFFISANCE_RENALE_SEVERE; GROSSESSE
+    +{abstract} interdit(eq, produit) : boolean
+  }
+  enum TypeEquipement { IRM; SCANNER_CT; TABLE_RX; ECHOGRAPHE
+    +getHabilitationRequise()
+    +getBlindagePlombMinMm() }
+}
+
+Identifiable <|.. Personne
+Personne <|-- Patient
+Personne <|-- PersonnelMedical
+PersonnelMedical <|-- MedecinRadiologue
+PersonnelMedical <|-- ManipulateurRadio
+Identifiable <|.. EquipementImagerie
+Identifiable <|.. SalleRadiologie
+Identifiable <|.. ExamenMedical
+Identifiable <|.. RendezVous
+Identifiable <|.. CompteRenduMedical
+Identifiable <|.. FactureMedicale
+Identifiable <|.. Paiement
+Identifiable <|.. ConsommableMedical
+Identifiable <|.. DemandeTeleExpertise
+Identifiable <|.. CommandeFournisseur
+Identifiable <|.. ConflitJournal
+
+MedecinRadiologue *-- "1" DisponibiliteHebdo : dispoPlanning
+EquipementImagerie *-- "0..*" InterventionMaintenance
+PersonnelMedical ..> ActiviteMensuelle
+Patient --> "0..*" ContreIndication
+
+SalleRadiologie "0..1" --> "0..1" EquipementImagerie : equipementAttribueId
+RendezVous "0..*" --> "1" Patient
+RendezVous "0..*" --> "1" MedecinRadiologue
+RendezVous "0..*" --> "1" ManipulateurRadio
+RendezVous "0..*" --> "1" SalleRadiologie
+RendezVous "0..*" --> "1" ExamenMedical
+ExamenMedical "0..*" --> "0..1" ConsommableMedical
+CompteRenduMedical "0..1" --> "1" RendezVous
+FactureMedicale "0..1" --> "1" RendezVous
+FactureMedicale "0..*" --> "1" Patient
+Paiement "0..*" --> "1" FactureMedicale
+DemandeTeleExpertise "0..*" --> "1" RendezVous
+CommandeFournisseur "0..*" --> "1" ConsommableMedical
+
+package "dao (Accès aux données JSON)" {
+  interface "Dao<T>" as Dao {
+    +findAll() / findById(id) / findWhere(p)
+    +create(t) / update(t) / delete(id)
+    +nextId() : String
+  }
+  class "JsonDao<T>" as JsonDao {
+    -fichier : Path
+    -cache : Map<String, T>
+    -charger()
+    #sauvegarder()
+  }
+  class DataStore {
+    +patients, medecins, manipulateurs, equipements, salles,
+    examens, rendezVous, comptesRendus, factures, paiements,
+    consommables, teleExpertises, commandes, journalConflits : JsonDao
+  }
+  Dao <|.. JsonDao
+  DataStore *-- "14" JsonDao
+}
+
+package "service (Logique métier)" {
+  interface RegleConflit { +verifier(ctx : ContexteConflit) : List<Conflit> }
+  class MoteurConflits {
+    -regles : List<RegleConflit>
+    +verifier(rdv) : List<Conflit>
+    +verifierOuRejeter(rdv, contexte)
+    +journaliser(conflits, contexte)
+  }
+  class RegleDoubleReservation
+  class RegleChevauchementAgenda
+  class ReglePotentielHeures
+  class RegleHabilitation
+  class RegleBlocagePatient
+  class RegleRuptureStock
+  RegleConflit <|.. RegleDoubleReservation
+  RegleConflit <|.. RegleChevauchementAgenda
+  RegleConflit <|.. ReglePotentielHeures
+  RegleConflit <|.. RegleHabilitation
+  RegleConflit <|.. RegleBlocagePatient
+  RegleConflit <|.. RegleRuptureStock
+  MoteurConflits o-- "6" RegleConflit
+
+  class ServiceRegistry
+  class PatientService
+  class PersonnelService
+  class EquipementService
+  class ExamenService
+  class RendezVousService
+  class CompteRenduService
+  class FacturationService
+  class ComptabiliteService
+  class StockService
+  class TeleExpertiseService
+  class StatistiqueService
+  class AlerteService
+  ServiceRegistry *-- PatientService
+  ServiceRegistry *-- RendezVousService
+  ServiceRegistry *-- MoteurConflits
+  RendezVousService --> MoteurConflits
+  RendezVousService --> FacturationService
+  RendezVousService --> StockService
+  RendezVousService --> EquipementService
+  TeleExpertiseService --> MoteurConflits
+  RegleRuptureStock --> StockService
+  ComptabiliteService --> PersonnelService
+  StatistiqueService --> ComptabiliteService
+}
+
+package "controller" {
+  class PatientController
+  class RendezVousController
+  class "... (10 contrôleurs)" as AutresCtrl
+}
+
+package "view (console)" {
+  class Console { Scanner + saisie typée + ANSI }
+  class Menu
+  class "Tableau<T>" as Tableau
+  class MainView
+  class PlanningView
+  class PatientView
+  class "... (11 vues)" as AutresVues
+}
+
+MainView --> PatientView
+MainView --> PlanningView
+PlanningView --> RendezVousController
+PatientView --> PatientController
+PatientController --> PatientService
+RendezVousController --> RendezVousService
+PatientService --> DataStore
+@enduml
