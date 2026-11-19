@@ -146,3 +146,4 @@ Pour visualiser le diagramme UML, ouvrez `docs/diagramme-classes.puml` avec l'ex
 - Les données sont rechargées entièrement en mémoire, ce qui convient au volume d'un centre (quelques milliers d'enregistrements).
 - Pas d'authentification ni de gestion des rôles : le cahier des charges ne les demande pas.
 - Les paramètres du centre (horaires 8 h–19 h, seuil débiteur 500 TND, échéance 30 jours…) sont des constantes de `ParametresCentre`. Ils ne sont pas modifiables depuis l'interface.
+# RadioCare
