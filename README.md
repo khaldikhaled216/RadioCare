@@ -1,9 +1,10 @@
 # RadioCare
 
-Application **console** Java de gestion d'un centre de radiologie et d'imagerie médicale.
+Application Java de gestion d'un centre de radiologie et d'imagerie médicale.
 Mini-projet POO, CPI-2, Faculté des Sciences de Bizerte (Université de Carthage), 2026-2027.
 
-- Architecture stricte en **5 couches** : Model → DAO → Service → Controller → View (console).
+- Architecture stricte en **5 couches** : Model → DAO → Service → Controller → View.
+- **Deux interfaces** sur les mêmes contrôleurs : une **interface graphique JavaFX** (par défaut) et une **interface console** (`--console`).
 - **13 entités** : les 10 obligatoires et les 3 de l'extension trinôme.
 - Fonctionnalités **F1 à F10**, plus un **moteur de conflits à 6 règles**.
 - **Persistance JSON** automatique : un fichier par entité.
@@ -16,7 +17,7 @@ Mini-projet POO, CPI-2, Faculté des Sciences de Bizerte (Université de Carthag
 | JDK | 21 ou plus récent (testé avec OpenJDK 25, compilé en `--release 21`) |
 | Maven | inutile à installer : le wrapper `./mvnw` le télécharge (ou Maven ≥ 3.9) |
 
-Dépendances, téléchargées automatiquement : Jackson 2.17 (JSON) et JUnit 5.10 (tests). Le projet n'utilise aucun framework ni aucune base de données.
+Dépendances, téléchargées automatiquement : JavaFX 21 (interface graphique), Jackson 2.17 (JSON) et JUnit 5.10 (tests). Le projet n'utilise aucun framework ni aucune base de données.
 
 ## Compilation, tests et exécution
 
@@ -35,9 +36,11 @@ java -jar target/radiocare-1.0.0-all.jar
 Autres possibilités :
 
 ```bash
+./mvnw javafx:run           # interface graphique sans construire le jar
 ./mvnw test                 # tests seulement
-./mvnw -q compile exec:java # lancement sans construire le jar
 ```
+
+Le jar contient JavaFX pour le système sur lequel il a été construit (Linux, Windows ou macOS) : reconstruisez-le sur la machine cible.
 
 Sous Windows, utilisez `mvnw.cmd`.
 
@@ -48,12 +51,33 @@ Options de lancement :
 | `--data <dossier>` | dossier des fichiers JSON (défaut : `./data`) |
 | `--exports <dossier>` | dossier des rapports exportés (défaut : `./exports`) |
 | `--sans-demo` | ne pas générer les données de démonstration au premier lancement |
+| `--console` | utiliser l'interface console au lieu de l'interface graphique |
 
 Au **premier lancement**, si `data/` est vide, un jeu de données fictif cohérent est généré : 52 patients, 4 médecins, 5 manipulateurs, 5 équipements, 5 salles, environ 800 rendez-vous sur 10 semaines, ainsi que les factures, paiements, comptes-rendus, télé-expertises et commandes correspondants. Pour repartir de zéro, supprimez le dossier `data/`.
 
 Les couleurs ANSI sont désactivées automatiquement hors terminal, ou si la variable `NO_COLOR` est définie.
 
-## Utilisation
+## Interface graphique (JavaFX)
+
+Une barre latérale donne accès à 11 écrans :
+
+| Écran | Contenu |
+|---|---|
+| Tableau de bord | indicateurs du jour et du mois, planning du jour, alertes prioritaires, graphiques d'occupation et de recettes/dépenses |
+| Notifications | toutes les alertes (maintenance, pannes, stock, péremption, factures en retard, télé-expertise) |
+| Patients | liste avec recherche, ajout / modification / suppression, dossier : bilan financier et historique des examens |
+| Rendez-vous & planning | vue semaine en cartes colorées par statut, liste détaillée, nouveau RDV, vérification d'un créneau, accueil, réalisation (facture), annulation |
+| Examens & comptes-rendus | comptes-rendus (rédaction, consultation) et catalogue des examens |
+| Télé-expertise | demandes, avis de l'expert, replanification |
+| Personnel médical | médecins, manipulateurs, heures de garde, rémunérations du mois |
+| Équipements & salles | usure et potentiel restant, maintenance avec historique, salles et conformité |
+| Stocks & commandes | consommables, stock prévisionnel, commandes fournisseurs et réception |
+| Facturation & paiements | factures, paiements, bilan financier mensuel avec graphique sur 6 mois |
+| Statistiques & rapports | occupation, attente, conflits, rentabilité, journal des conflits, export JSON + texte |
+
+Les formulaires restent ouverts en cas d'erreur et affichent le message, y compris la liste des conflits détectés par le moteur.
+
+## Utilisation de la console (`--console`)
 
 ```
  1. Tableau de bord                       7. Catalogue des examens
@@ -97,6 +121,8 @@ radiocare/
     │   │   └── conflit/         MoteurConflits + 6 règles (RegleConflit)
     │   ├── controller/          10 contrôleurs
     │   └── view/                vues console + Console (Scanner), Menu, Tableau
+    │       └── fx/              interface JavaFX : Fenetre, Formulaire, Ui, pages/ (11 écrans)
+    ├── main/resources/css/      thème graphique (radiocare.css)
     └── test/java/com/radiocare/ tests JUnit 5 (DAO + services)
 ```
 

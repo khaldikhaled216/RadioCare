@@ -17,6 +17,7 @@
         <jackson.version>2.17.2</jackson.version>
         <junit.version>5.10.3</junit.version>
         <main.class>com.radiocare.Main</main.class>
+        <javafx.version>21.0.5</javafx.version>
     </properties>
 
     <dependencies>
@@ -29,6 +30,18 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <!-- utilisé uniquement par l'outil de captures d'écran des tests -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
+            <version>${javafx.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -56,7 +69,16 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.3.1</version>
             </plugin>
-            <!-- mvn exec:java : lance l'application console -->
+            <!-- mvn javafx:run : lance l'interface graphique JavaFX -->
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <mainClass>com.radiocare.view.fx.RadioCareFx</mainClass>
+                </configuration>
+            </plugin>
+            <!-- mvn exec:java : lance l'application (graphique par défaut, option console pour le mode texte) -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>

@@ -1,0 +1,141 @@
+/* Thème RadioCare : tableau de bord médical clair, bleu nuit + turquoise */
+.root {
+    -rc-primaire: #0e7c86;
+    -rc-primaire-fonce: #0a5f67;
+    -rc-nuit: #13293d;
+    -rc-fond: #f2f5f8;
+    -rc-carte: #ffffff;
+    -rc-texte: #1f2d3a;
+    -rc-gris: #6b7a89;
+    -rc-bord: #dde3ea;
+    -rc-danger: #c0392b;
+    -rc-alerte: #d68910;
+    -rc-succes: #1e8449;
+    -fx-font-family: "Inter", "Noto Sans", "DejaVu Sans", sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: -rc-fond;
+    -fx-text-fill: -rc-texte;
+}
+
+/* ---------- barre latérale ---------- */
+.sidebar {
+    -fx-background-color: -rc-nuit;
+    -fx-padding: 18 10 14 10;
+    -fx-spacing: 3;
+    -fx-pref-width: 230;
+}
+.logo { -fx-text-fill: white; -fx-font-size: 21px; -fx-font-weight: bold; -fx-padding: 0 0 0 8; }
+.logo-sous { -fx-text-fill: #8fb3c9; -fx-font-size: 11px; -fx-padding: 0 0 14 8; }
+.nav-section { -fx-text-fill: #6f8ba0; -fx-font-size: 10px; -fx-font-weight: bold; -fx-padding: 12 0 4 10; }
+.nav-bouton {
+    -fx-background-color: transparent;
+    -fx-text-fill: #d5e3ec;
+    -fx-alignment: center-left;
+    -fx-padding: 9 12 9 12;
+    -fx-background-radius: 7;
+    -fx-cursor: hand;
+    -fx-max-width: infinity;
+}
+.nav-bouton:hover { -fx-background-color: #1d3b55; }
+.nav-bouton.actif { -fx-background-color: -rc-primaire; -fx-text-fill: white; -fx-font-weight: bold; }
+.badge {
+    -fx-background-color: -rc-danger; -fx-text-fill: white; -fx-font-size: 10px; -fx-font-weight: bold;
+    -fx-padding: 1 6 1 6; -fx-background-radius: 9;
+}
+.sidebar-pied { -fx-text-fill: #6f8ba0; -fx-font-size: 10px; -fx-padding: 8 0 0 8; -fx-wrap-text: true; }
+
+/* ---------- en-tête et contenu ---------- */
+.entete {
+    -fx-background-color: white; -fx-padding: 14 24 14 24;
+    -fx-border-color: transparent transparent -rc-bord transparent;
+}
+.entete-titre { -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: -rc-texte; }
+.entete-date { -fx-text-fill: -rc-gris; }
+.contenu { -fx-padding: 20 24 20 24; -fx-background-color: -rc-fond; }
+.barre-statut { -fx-background-color: white; -fx-padding: 6 24 6 24; -fx-border-color: -rc-bord transparent transparent transparent; }
+.statut-ok { -fx-text-fill: -rc-succes; }
+.statut-erreur { -fx-text-fill: -rc-danger; }
+
+/* ---------- cartes ---------- */
+.carte {
+    -fx-background-color: -rc-carte; -fx-background-radius: 10; -fx-padding: 14 16 14 16;
+    -fx-border-color: -rc-bord; -fx-border-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(19,41,61,0.06), 8, 0, 0, 2);
+}
+.kpi-titre { -fx-text-fill: -rc-gris; -fx-font-size: 12px; }
+.kpi-valeur { -fx-text-fill: -rc-texte; -fx-font-size: 22px; -fx-font-weight: bold; }
+.kpi-sous { -fx-text-fill: -rc-gris; -fx-font-size: 11px; }
+.kpi-accent { -fx-border-color: transparent transparent transparent -rc-primaire; -fx-border-width: 0 0 0 4; }
+.kpi-alerte { -fx-border-color: transparent transparent transparent -rc-alerte; -fx-border-width: 0 0 0 4; }
+.kpi-danger { -fx-border-color: transparent transparent transparent -rc-danger; -fx-border-width: 0 0 0 4; }
+.section-titre { -fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: -rc-texte; -fx-padding: 0 0 6 0; }
+.texte-gris { -fx-text-fill: -rc-gris; }
+.champ-libelle { -fx-text-fill: -rc-gris; -fx-min-width: 170; }
+.champ-valeur { -fx-text-fill: -rc-texte; -fx-font-weight: bold; -fx-wrap-text: true; }
+
+/* ---------- boutons ---------- */
+.button { -fx-background-radius: 7; -fx-padding: 7 14 7 14; -fx-cursor: hand; }
+.btn-primaire { -fx-background-color: -rc-primaire; -fx-text-fill: white; -fx-font-weight: bold; }
+.btn-primaire:hover { -fx-background-color: -rc-primaire-fonce; }
+.btn-secondaire { -fx-background-color: white; -fx-text-fill: -rc-texte; -fx-border-color: -rc-bord; -fx-border-radius: 7; }
+.btn-secondaire:hover { -fx-background-color: #e9eef3; }
+.btn-danger { -fx-background-color: white; -fx-text-fill: -rc-danger; -fx-border-color: #e6b0aa; -fx-border-radius: 7; }
+.btn-danger:hover { -fx-background-color: #fdedec; }
+
+/* ---------- tables ---------- */
+.table-view { -fx-background-color: white; -fx-border-color: -rc-bord; -fx-background-radius: 8; -fx-border-radius: 8; }
+.table-view .column-header-background { -fx-background-color: #f7f9fb; }
+.table-view .column-header { -fx-background-color: transparent; -fx-border-color: transparent transparent -rc-bord transparent; -fx-padding: 6 4 6 4; }
+.table-view .column-header .label { -fx-text-fill: -rc-gris; -fx-font-weight: bold; -fx-font-size: 12px; -fx-alignment: center-left; }
+.table-row-cell { -fx-cell-size: 32px; -fx-border-color: transparent transparent #eef1f4 transparent; }
+.table-row-cell:selected { -fx-background-color: #d6eef0; }
+.table-row-cell:selected .text { -fx-fill: -rc-texte; }
+.table-view:focused .table-row-cell:selected { -fx-background-color: #c3e6e9; }
+
+/* ---------- pastilles de statut ---------- */
+.pastille { -fx-padding: 2 8 2 8; -fx-background-radius: 10; -fx-font-size: 11px; -fx-font-weight: bold; }
+.p-bleu { -fx-background-color: #dbeefe; -fx-text-fill: #1a5e9a; }
+.p-vert { -fx-background-color: #d5f5e3; -fx-text-fill: #1e8449; }
+.p-orange { -fx-background-color: #fdebd0; -fx-text-fill: #9c640c; }
+.p-rouge { -fx-background-color: #fadbd8; -fx-text-fill: #a93226; }
+.p-gris { -fx-background-color: #eaecee; -fx-text-fill: #566573; }
+
+/* ---------- onglets ---------- */
+.tab-pane > .tab-header-area > .headers-region > .tab { -fx-background-color: transparent; -fx-padding: 6 14 6 14; }
+.tab-pane > .tab-header-area > .headers-region > .tab:selected { -fx-border-color: transparent transparent -rc-primaire transparent; -fx-border-width: 0 0 3 0; }
+.tab-pane > .tab-header-area > .headers-region > .tab .tab-label { -fx-text-fill: -rc-gris; -fx-font-weight: bold; }
+.tab-pane > .tab-header-area > .headers-region > .tab:selected .tab-label { -fx-text-fill: -rc-primaire; }
+.tab-pane > .tab-header-area > .tab-header-background { -fx-background-color: transparent; }
+.tab-pane > .tab-header-area { -fx-padding: 0 0 8 0; }
+
+/* ---------- planning hebdomadaire ---------- */
+.jour-colonne { -fx-background-color: white; -fx-background-radius: 10; -fx-border-color: -rc-bord; -fx-border-radius: 10; -fx-padding: 8; -fx-spacing: 6; }
+.jour-titre { -fx-font-weight: bold; -fx-text-fill: -rc-texte; }
+.jour-aujourdhui { -fx-border-color: -rc-primaire; -fx-border-width: 2; }
+.rdv-carte { -fx-background-radius: 7; -fx-padding: 6 8 6 8; -fx-spacing: 1; -fx-cursor: hand; }
+.rdv-carte .label { -fx-font-size: 11px; }
+.rdv-heure { -fx-font-weight: bold; }
+.rdv-planifie { -fx-background-color: #e3f2fd; -fx-border-color: transparent transparent transparent #1e88e5; -fx-border-width: 0 0 0 3; }
+.rdv-encours { -fx-background-color: #fff3e0; -fx-border-color: transparent transparent transparent #fb8c00; -fx-border-width: 0 0 0 3; }
+.rdv-realise { -fx-background-color: #e8f5e9; -fx-border-color: transparent transparent transparent #43a047; -fx-border-width: 0 0 0 3; }
+.rdv-annule { -fx-background-color: #f2f3f4; -fx-border-color: transparent transparent transparent #95a5a6; -fx-border-width: 0 0 0 3; -fx-opacity: 0.7; }
+.rdv-selection { -fx-effect: dropshadow(gaussian, rgba(14,124,134,0.6), 6, 0.4, 0, 0); }
+
+/* ---------- alertes ---------- */
+.alerte-ligne { -fx-background-color: white; -fx-background-radius: 8; -fx-padding: 10 14 10 14; -fx-spacing: 12; -fx-border-color: -rc-bord; -fx-border-radius: 8; }
+.alerte-critique { -fx-border-color: transparent transparent transparent -rc-danger; -fx-border-width: 0 0 0 4; }
+.alerte-avertissement { -fx-border-color: transparent transparent transparent -rc-alerte; -fx-border-width: 0 0 0 4; }
+.alerte-info { -fx-border-color: transparent transparent transparent #2e86c1; -fx-border-width: 0 0 0 4; }
+
+/* ---------- formulaires ---------- */
+.formulaire { -fx-padding: 16 20 8 20; -fx-hgap: 12; -fx-vgap: 9; }
+.form-erreur { -fx-text-fill: -rc-danger; -fx-wrap-text: true; -fx-padding: 8 12 8 12; -fx-background-color: #fdedec; -fx-background-radius: 6; }
+.text-field, .combo-box, .date-picker, .text-area { -fx-background-radius: 6; }
+.progress-bar > .bar { -fx-background-color: -rc-primaire; -fx-background-radius: 4; -fx-background-insets: 2; }
+.progress-bar.basse > .bar { -fx-background-color: -rc-danger; }
+.progress-bar.moyenne > .bar { -fx-background-color: -rc-alerte; }
+.chart { -fx-padding: 4; }
+.chart-title { -fx-font-size: 13px; -fx-font-weight: bold; }
+.default-color0.chart-bar { -fx-bar-fill: #0e7c86; }
+.default-color1.chart-bar { -fx-bar-fill: #e67e22; }
+.default-color2.chart-bar { -fx-bar-fill: #5d6d7e; }
